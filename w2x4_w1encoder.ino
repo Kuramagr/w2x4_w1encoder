@@ -1,3 +1,9 @@
+/* the code is for a Arduino pro micro controller
+    handwired keyboard with every switch assing to a pin of the controller.
+    if you have some corrections please send a feedback
+    still under develpment
+*/
+
 #include <Bounce2.h>
 #include <Keyboard.h>
 #include <Encoder.h>
@@ -8,7 +14,7 @@ const int numButtons = 8;
 const int buttonPins[numButtons] = {5,6,7,8,9,10,11,12}; //Array of button pins in an order that makes sense to me
 int state = 0;
 //Set up all the buttons as bounce objects
-Bounce buttons[] = {Bounce(buttonPins[0],10),Bounce(buttonPins[1],10),Bounce(buttonPins[2],10),Bounce(buttonPins[3],10),Bounce(buttonPins[4],10),Bounce(buttonPins[5],10),Bounce(buttonPins[6],10),Bounce(buttonPins[7],10),Bounce(buttonPins[8],10),Bounce(buttonPins[9],10),Bounce(buttonPins[10],10),Bounce(buttonPins[11],10)};
+Bounce buttons[] = {Bounce(buttonPins[0],10),Bounce(buttonPins[1],10),Bounce(buttonPins[2],10),Bounce(buttonPins[3],10),Bounce(buttonPins[4],10),Bounce(buttonPins[5],10),Bounce(buttonPins[6],10),Bounce(buttonPins[7],10)};
 
 // Define pins for the encoder
 const int clkPin = 2;
