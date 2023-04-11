@@ -103,30 +103,6 @@ void loop() {
                 delay(100);
                 Keyboard.releaseAll();
                 break;
-              case 8:
-              Keyboard.press(KEY_RIGHT_GUI);
-                Keyboard.press('E');
-                delay(100);
-                Keyboard.releaseAll();
-                break;
-              case 9:
-              Keyboard.press(KEY_RIGHT_GUI);
-                Keyboard.press('A');
-                delay(100);
-                Keyboard.releaseAll();
-                break;
-              case 10:
-              Keyboard.press(KEY_RIGHT_ALT);
-                Keyboard.press('S');
-                delay(100);
-                Keyboard.releaseAll();
-                break;
-              case 11:
-              Keyboard.press(KEY_RIGHT_GUI);
-                Keyboard.press('X');
-                delay(100);
-                Keyboard.releaseAll();
-                break;
              }
             break;
 
