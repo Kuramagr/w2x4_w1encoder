@@ -1,50 +1,38 @@
 /* the code is for a Arduino pro micro controller
     handwired keyboard with every switch assing to a pin of the controller.
     if you have some corrections please send a feedback
-    still under develpment
+    
+    This is a working version of the micropad for davinci resolve shortcuts.
+    the button of the encoder has been added to the array of buttons like case 8
+    
+    If you need to replace the shortcuts remember if you write with capital letters will aslo press SHIFT
+    
+    I hope it helps a little bit to start for your macropad
 */
 
 #include <Bounce2.h>
 #include <Keyboard.h>
 #include <Encoder.h>
 
+// Define pins for the encoder
+const int dtPin = 3;
+const int swPin = 2;
 
 //Set up the button grid
-const int numButtons = 8;
-const int buttonPins[numButtons] = {5,6,7,8,9,10,11,12}; //Array of button pins in an order that makes sense to me
+const int numButtons = 9;
+const int buttonPins[numButtons] = {5,6,7,8,9,10,16,14,4}; //Array of button pins in an order that makes sense to me
 int state = 0;
+
 //Set up all the buttons as bounce objects
-Bounce buttons[] = {Bounce(buttonPins[0],10),Bounce(buttonPins[1],10),Bounce(buttonPins[2],10),Bounce(buttonPins[3],10),Bounce(buttonPins[4],10),Bounce(buttonPins[5],10),Bounce(buttonPins[6],10),Bounce(buttonPins[7],10)};
+Bounce buttons[] = {Bounce(buttonPins[0],10),Bounce(buttonPins[1],10),Bounce(buttonPins[2],10),Bounce(buttonPins[3],10),Bounce(buttonPins[4],10),Bounce(buttonPins[5],10),Bounce(buttonPins[6],10),Bounce(buttonPins[7],10), Bounce(buttonPins[8],10)};
 
-// Define pins for the encoder
-const int clkPin = 2;
-const int dtPin = 3;
-const int swPin = 4;
-
-// Initialize variables
-volatile int encoderPos = 0;
-volatile boolean buttonState = LOW;
-volatile boolean lastButtonState = LOW;
 
 void setup() {
   Serial.begin(9600);
   Keyboard.begin(); //Start the Keyboard object
   for(int i = 0; i < numButtons; i++){
      pinMode(buttonPins[i], INPUT_PULLUP);
-  }
-  // Set pin modes
-  pinMode(clkPin, INPUT_PULLUP);
-  pinMode(dtPin, INPUT_PULLUP);
-  pinMode(swPin, INPUT_PULLUP);
   
-  // Attach interrupt to the CLK pin
-  attachInterrupt(digitalPinToInterrupt(clkPin), updateEncoder, CHANGE);
-  
-  // Set initial state of button
-  lastButtonState = digitalRead(swPin);
-  
-  // Start the serial communication
-  Serial.begin(9600);
 }
 
 void loop() {
@@ -60,7 +48,7 @@ void loop() {
           case 0: //Layout 1
             switch (j) {
               case 0: 
-                Keyboard.press('M');
+                Keyboard.press('m');
                 delay(100);
                 Keyboard.releaseAll();
                 break;
@@ -71,35 +59,40 @@ void loop() {
                 Keyboard.releaseAll();
                 break;
               case 2: 
-              Keyboard.press('K');
+              Keyboard.press('k');
                 delay(100);
                 Keyboard.releaseAll();
                break;
               case 3:
                 Keyboard.press(KEY_RIGHT_SHIFT);
-                Keyboard.press('L');
+                Keyboard.press('l');
                 delay(100);
                 Keyboard.releaseAll();
                 break;
               case 4: 
               Keyboard.press(KEY_RIGHT_GUI);
-                Keyboard.press('V');
+                Keyboard.press('v');
                 delay(100);
                 Keyboard.releaseAll();
                 break;
               case 5:
               Keyboard.press(KEY_RIGHT_GUI);
-                Keyboard.press('C');
+                Keyboard.press('c');
                 delay(100);
                 Keyboard.releaseAll();
                 break;
               case 6: 
-                Keyboard.press('O');
+                Keyboard.press('o');
                 delay(100);
                 Keyboard.releaseAll();
                 break;
               case 7:
-                Keyboard.press('I');
+                Keyboard.press('i');
+                delay(100);
+                Keyboard.releaseAll();
+                break;
+              case 8:
+                Keyboard.press('b');
                 delay(100);
                 Keyboard.releaseAll();
                 break;
@@ -128,20 +121,18 @@ void loop() {
   }
 }
 
-void updateEncoder() {
-  // Read the state of the CLK pin
-  int clkState = digitalRead(clkPin);
-  
-  // Read the state of the DT pin
-  int dtState = digitalRead(dtPin);
-  
-  // Determine direction of rotation
-  if (clkState != dtState) {
-    encoderPos++;
-  } else {
-    encoderPos--;
+ // If the encoder is turned to the right, press the 'l' key
+  if (encoder1Value > 0) {
+    Keyboard.press(KEY_LEFT_ARROW);
+    delay(50);
+    Keyboard.release('l');
+    encoder1.write(0);
   }
-  
-  // Add delay to rotation
-  delay(50);
+  // If the encoder is turned to the left, press the 'j' key
+  else if (encoder1Value < 0) {
+    Keyboard.press('KEY_RIGHT_ARROW');
+    delay(50);
+    Keyboard.release('j');
+    encoder1.write(0);
+  }
 }
